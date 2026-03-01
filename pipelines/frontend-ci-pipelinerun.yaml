@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: my-vehicle-dashboard-frontend-ci-
+  namespace: my-vehicle-dev
+spec:
+  pipelineRef:
+    name: my-vehicle-dashboard-frontend-ci-pipeline
+  params:
+    - name: GIT_URL
+      value: "https://github.com/kmotojim-rhdh-practice/my-vehicle-dashboard.git"
+    - name: GIT_REVISION
+      value: main
+    - name: SOURCE_PATH
+      value: frontend
+    - name: SONAR_HOST_URL
+      value: "<YOUR_SONARQUBE_URL>"
+    - name: SONAR_PROJECT_KEY
+      value: my-vehicle-dashboard-frontend
+    - name: SONAR_TOKEN
+      value: "<YOUR_SONAR_TOKEN>"
+    - name: DOCKERFILE_PATH
+      value: ./frontend/Dockerfile
+    - name: INTERNAL_REGISTRY_URL
+      value: image-registry.openshift-image-registry.svc:5000/my-vehicle-dev/my-vehicle-dashboard-frontend
+    - name: EXTERNAL_REGISTRY_URL
+      value: "quay.io/rh_ee_kmotojim/my-vehicle-dashboard/my-vehicle-dashboard-frontend"
+    - name: IMAGE_TAG
+      value: latest
+  workspaces:
+    - name: workspace
+      persistentVolumeClaim:
+        claimName: pipeline-workspace-pvc

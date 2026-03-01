@@ -1,0 +1,11 @@
+site_name: my-vehicle-dashboard-manifests
+site_description: Kubernetesマニフェストリポジトリ
+
+nav:
+  - ホーム: index.md
+  - セットアップ: setup.md
+  - CI/CDパイプライン: ci-cd.md
+  - リセット手順: reset.md
+
+plugins:
+  - techdocs-core

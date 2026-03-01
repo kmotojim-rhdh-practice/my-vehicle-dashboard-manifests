@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-vehicle-prod
+  labels:
+    app.kubernetes.io/name: my-vehicle-dashboard
+    app.kubernetes.io/part-of: my-vehicle-dashboard
+    environment: production

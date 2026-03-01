@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: my-vehicle-dev
+
+commonLabels:
+  environment: development
+
+resources:
+  - ../../base
+  - namespace.yaml
+
+patches:
+  - target:
+      kind: Namespace
+      name: my-vehicle-dashboard
+    patch: |
+      $patch: delete
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: my-vehicle-dashboard
+
+images:
+  - name: image-registry.openshift-image-registry.svc:5000/my-vehicle-dashboard/backend
+    newName: image-registry.openshift-image-registry.svc:5000/my-vehicle-dev/backend
+    newTag: dev
+  - name: image-registry.openshift-image-registry.svc:5000/my-vehicle-dashboard/frontend
+    newName: image-registry.openshift-image-registry.svc:5000/my-vehicle-dev/frontend
+    newTag: dev
+
+replicas:
+  - name: my-vehicle-dashboard-backend
+    count: 1
+  - name: my-vehicle-dashboard-frontend
+    count: 1

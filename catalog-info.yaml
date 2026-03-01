@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: my-vehicle-dashboard-manifests
+  description: Kubernetesマニフェストリポジトリ
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    argocd/app-name: my-vehicle-dashboard-dev
+    github.com/project-slug: undefined/undefined
+  tags:
+    - kubernetes
+    - argocd
+    - gitops
+spec:
+  type: gitops
+  lifecycle: production
+  owner: user:default/kmotojim
+  system: smart-mobility
+  dependsOn:
+    - component:my-vehicle-dashboard

@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-vehicle-dashboard-backend
+  labels:
+    app.kubernetes.io/name: my-vehicle-dashboard-backend
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: my-vehicle-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: my-vehicle-dashboard-backend
+      app.kubernetes.io/component: backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: my-vehicle-dashboard-backend
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/part-of: my-vehicle-dashboard
+    spec:
+      containers:
+        - name: backend
+          image: image-registry.openshift-image-registry.svc:5000/my-vehicle-dashboard/backend:latest
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+          env:
+            - name: QUARKUS_HTTP_HOST
+              value: "0.0.0.0"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "50m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /api/vehicle/state
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/vehicle/state
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
